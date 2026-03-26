@@ -1,0 +1,29 @@
+announcement:
+  label: Announcements
+  permalink: /announcement
+  description: Official news, project updates, and community announcements from Circular Engineering Nova.
+
+release:
+  label: Releases
+  permalink: /release
+  description: Major ecosystem version drops, CalVer updates, and new component launches.
+
+architecture:
+  label: Architecture
+  permalink: /architecture
+  description: Deep dives into the System-of-Systems design, federated polyrepo structure, and ADRs.
+
+circular-economy:
+  label: Circular Economy
+  permalink: /circular-economy
+  description: Insights into sustainability, resource recovery, and closing the loop.
+
+enablers:
+  label: Horizontal Enablers
+  permalink: /enablers
+  description: Updates on shared foundational services like NovaFin, NovaTrade, and NovaMind.
+
+sectors:
+  label: Vertical Sectors
+  permalink: /sectors
+  description: Industry-specific applications and use cases like NovaAgro, NovaRetail, and NovaBuild.

@@ -1,0 +1,101 @@
+name: Publish Website Artifact
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: read
+
+jobs:
+  check-and-release:
+    runs-on: ubuntu-latest
+    container:
+      # Use your updated image containing Node + Python
+      image: ghcr.io/novaeco-tech/novaeco-dev-unified:v0.1.0
+      options: --user root
+      credentials:
+        username: github-actions[bot]
+        password: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 1. Generate Automation Token (Shared Strategy)
+      - name: Generate Automation Token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.AUTOMATION_APP_PRIVATE_KEY }}
+          owner: novaeco-tech
+
+      # 2. Check Version (Reads package.json)
+      - name: Check Version & Tag
+        id: check
+        run: |
+          # Extract version from package.json using node
+          VERSION=$(node -p "require('./package.json').version")
+          
+          TAG_NAME="novaeco-website-v$VERSION"
+          
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+          
+          if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
+            echo "Tag $TAG_NAME already exists. Skipping release."
+            echo "SHOULD_RELEASE=false" >> $GITHUB_OUTPUT
+          else
+            echo "New version detected ($VERSION). Proceeding."
+            echo "SHOULD_RELEASE=true" >> $GITHUB_OUTPUT
+            echo "VERSION=$VERSION" >> $GITHUB_ENV
+            echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+          fi
+
+      # 3. Install NovaEco CLI & Deps
+      - name: Install Tooling
+        if: steps.check.outputs.SHOULD_RELEASE == 'true'
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          # Allow pip to install globally in this container
+          git config --global url."https://x-access-token:${GH_TOKEN}@github.com/".insteadOf "https://github.com/"
+          
+          # Install CLI
+          pip install --break-system-packages "git+https://github.com/novaeco-tech/novaeco-devtools.git@v0.1.0#subdirectory=novaeco-cli"
+
+      # 4. Build & Package Artifact
+      - name: Build Artifact
+        if: steps.check.outputs.SHOULD_RELEASE == 'true'
+        run: |
+          # Runs npm install -> npm build -> tars output to dist/
+          novaeco build web --out-dir dist
+
+      # 5. Create Release
+      - name: Create GitHub Release
+        if: steps.check.outputs.SHOULD_RELEASE == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ steps.generate_token.outputs.token }}
+          tag_name: ${{ env.TAG_NAME }}
+          name: "NovaEco Website v${{ env.VERSION }}"
+          files: dist/novaeco-website.tar.gz
+          generate_release_notes: true
+
+      # 6. Signal QA
+      - name: Dispatch to NovaEco QA
+        if: steps.check.outputs.SHOULD_RELEASE == 'true'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ steps.generate_token.outputs.token }}
+          repository: novaeco-tech/novaeco-qa
+          event-type: qa-trigger
+          client-payload: >-
+            {
+              "component": "novaeco-website",
+              "version": "${{ env.TAG_NAME }}",
+              "category": "docs",
+              "artifacts": ["novaeco-website.tar.gz"]
+            }

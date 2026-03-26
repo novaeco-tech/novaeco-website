@@ -26,6 +26,63 @@ Active development and migration from the legacy v1 prototype into this dedicate
 
 ---
 
+## 🚀 Getting Started
+
+### Prerequisites
+
+* **Node.js** (v20+ recommended)
+* **npm** or **yarn**
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/novaeco-tech/novaeco-website.git](https://github.com/novaeco-tech/novaeco-website.git)
+   cd novaeco-website
+````
+
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+### Building & Running
+
+  * **Start Local Development Server:**
+
+    ```bash
+    npm start
+    ```
+
+    *Starts a local server at `http://localhost:3000` with hot-reloading enabled.*
+
+  * **Build for Production:**
+
+    ```bash
+    npm run build
+    ```
+
+    *Generates static HTML/JS files into the `build/` directory.*
+
+---
+
+## 📂 Repository Structure
+
+```text
+novaeco-website/
+├── blog/                   # Ecosystem blog posts and announcements (.md)
+├── docs/                   # Markdown documentation (User Guides, ADRs, APIs)
+├── src/                    # React components and custom pages
+│   ├── components/         # Reusable UI components (HomepageFeatures, etc.)
+│   ├── css/                # Custom CSS styling (custom.css)
+│   └── pages/              # Standalone React pages (index.tsx, apps.tsx, tools.tsx, legal.tsx)
+├── static/                 # Static assets (Images, logos, OpenAPI JSON)
+├── docusaurus.config.ts    # Main Docusaurus configuration and routing
+└── sidebars.ts             # Sidebar navigation structure for docs
+```
+
+---
+
 ## 🌟 Key Capabilities (Target Architecture)
 
 ### 1. Unified Knowledge Base
@@ -47,7 +104,7 @@ The portal supports strict semantic versioning (e.g., `v1.0` vs `v2.0`). Develop
 
 ## 🤝 Contributing
 
-We welcome contributors to help build the open-source infrastructure for the circular economy. 
+We welcome contributors to help build the open-source infrastructure for the circular economy.
 
 Please see the central [**NovaEco Organization README**](https://github.com/novaeco-tech) for our overall contribution guidelines, Code of Conduct, and ecosystem roadmap.
 

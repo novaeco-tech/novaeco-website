@@ -1,0 +1,40 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* --- NovaEco Brand Identity (Blue) --- */
+/* Matches the Sphinx documentation configuration */
+:root {
+  /* Primary Blue: #1a73e8 */
+  --ifm-color-primary: #1a73e8;
+  --ifm-color-primary-dark: #1769d4;
+  --ifm-color-primary-darker: #1663c9;
+  --ifm-color-primary-darkest: #1251a6;
+  --ifm-color-primary-light: #3281eb;
+  --ifm-color-primary-lighter: #3e88ed;
+  --ifm-color-primary-lightest: #629ff2;
+  
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  /* Lighter Blue for Dark Mode (Better Contrast) */
+  --ifm-color-primary: #6ab0ff;
+  --ifm-color-primary-dark: #4da0ff;
+  --ifm-color-primary-darker: #3e98ff;
+  --ifm-color-primary-darkest: #107fff;
+  --ifm-color-primary-light: #87c0ff;
+  --ifm-color-primary-lighter: #96c8ff;
+  --ifm-color-primary-lightest: #c4e0ff;
+  
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Optional: Add a slight gradient to the Hero Banner for a more dynamic look */
+.hero--primary {
+  background: linear-gradient(180deg, var(--ifm-color-primary) 0%, var(--ifm-color-primary-darkest) 100%);
+}

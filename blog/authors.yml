@@ -1,0 +1,17 @@
+novaeco:
+  name: NovaEco Team
+  title: Circular Engineering Nova Core Team
+  url: https://circular.engineering
+  image_url: https://github.com/novaeco-tech.png
+  page: true
+  socials:
+    github: novaeco-tech
+
+claudiu.campeanu:
+  name: Claudiu Câmpeanu
+  title: Founder, Circular Engineering Nova GmbH
+  url: https://circular.engineering
+  image_url: https://circular.engineering/wp-content/uploads/2025/09/team_member_claudiu-150x150.jpg
+  page: true
+  socials:
+    github: novaeco-tech
