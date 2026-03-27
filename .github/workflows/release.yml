@@ -1,4 +1,4 @@
-name: Publish Website Artifact
+name: NovaEco Website Release
 
 on:
   push:
@@ -72,6 +72,9 @@ jobs:
         run: |
           # Runs npm install -> npm build -> tars output to dist/
           novaeco build web --out-dir dist
+          
+          # Copy and append the version to the artifact name
+          cp dist/novaeco-website.tar.gz dist/novaeco-website-${{ env.VERSION }}.tar.gz
 
       # 5. Create Release
       - name: Create GitHub Release
@@ -81,7 +84,8 @@ jobs:
           token: ${{ steps.generate_token.outputs.token }}
           tag_name: ${{ env.TAG_NAME }}
           name: "NovaEco Website v${{ env.VERSION }}"
-          files: dist/novaeco-website.tar.gz
+          # Use the newly versioned file
+          files: dist/novaeco-website-${{ env.VERSION }}.tar.gz
           generate_release_notes: true
 
       # 6. Signal QA
@@ -97,5 +101,5 @@ jobs:
               "component": "novaeco-website",
               "version": "${{ env.TAG_NAME }}",
               "category": "docs",
-              "artifacts": ["novaeco-website.tar.gz"]
+              "artifacts": ["novaeco-website-${{ env.VERSION }}.tar.gz"]
             }
